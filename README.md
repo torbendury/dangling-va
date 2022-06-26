@@ -48,4 +48,4 @@ If you have any feedback, please reach out to me at [torben@torbendury.de](mailt
 
 Contributions are always welcome!
 
-See `CONTRIBUTING.md` (to be done) for ways to get started.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) (to be done) for ways to get started.
