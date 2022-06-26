@@ -37,6 +37,7 @@ function list_dangling_va {
 }
 
 function delete_dangling_va {
+  echo "WARNING: This sub-command has not yet been implemented."
   return 0
 }
 
