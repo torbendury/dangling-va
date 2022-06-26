@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# argument handling
+if [[ $1 == "version" ]]; then
+  echo "0.0.1"
+  exit 0
+fi
+
+if [[ $1 == "list" ]]; then
+  list_dangling_va
+  exit 0
+fi
+
+if [[ $1 == "delete" ]]; then
+  delete_dangling_va
+  exit 0
+fi
+
+# inner functions
+function list_dangling_va {
+
+}
+
+function delete_dangling_va {
+
+}
+
+# private helper functions
+function __get_nodes {
+  kubectl get nodes -ojson | jq -r .items[].metadata.name
+}
+
+function __get_va {
+  kubectl get volumeattachments -ojson | jq '.items[] | {name: .metadata.name, node: .spec.nodeName}' | jq -s
+}

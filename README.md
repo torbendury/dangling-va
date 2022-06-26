@@ -1,3 +1,3 @@
-# `kubectl dangling-pv`
+# `kubectl dangling-va`
 
 tbd
