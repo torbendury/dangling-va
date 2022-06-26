@@ -1,13 +1,66 @@
 #!/bin/bash
 
+set -euo pipefail
+
+# private helper functions
+# return all nodes in the cluster in a raw string array that can be iterated over
+function __get_nodes_raw {
+  kubectl get nodes -ojson | jq -r .items[].metadata.name
+}
+
+# return all the nodes in the cluster in a JSON array
+function __get_nodes_json {
+  kubectl get nodes -ojson | jq '.items[] | {name: .metadata.name}' | jq -s
+}
+
+# return all volumeattachments raw, with the name of the node which they are attached to
+function __get_va_raw {
+  kubectl get volumeattachments -ojson | jq -r '.items[] | "\(.metadata.name),\(.spec.nodeName)"'
+}
+
+# return all the volumeattachments and the attached nodes in a JSON array
+function __get_va_json {
+  kubectl get volumeattachments -ojson | jq '.items[] | {name: .metadata.name, node: .spec.nodeName}' | jq -s
+}
+
+# public functions
+function list_dangling_va {
+  # create a OR'd filter which can be used within grep to apply a node name regex to volumeattachments
+  NODE_FILTER=$(__get_nodes_raw | sed -z 's/\n/|/g;s/|$/\n/')
+  DANGLING_VOLUMEATTACHMENTS=$(__get_va_raw | grep -vE "$NODE_FILTER" | cut -d',' -f1)
+  #DANGLING_VOLUMEATTACHMENTS=${DANGLING_VOLUMEATTACHMENTS//$'\n'/}
+  if [ -z $DANGLING_VOLUMEATTACHMENTS ]; then
+    echo "No dangling VolumeAttachments found."
+  else
+    echo "$DANGLING_VOLUMEATTACHMENTS"
+  fi
+}
+
+function delete_dangling_va {
+  return 0
+}
+
 # argument handling
 if [[ $1 == "version" ]]; then
-  echo "0.0.1"
+  echo -e "Installed version:\t\t0.0.1"
+  echo -e "Get the latest release at:\thttps://github.com/torbendury/dangling-va"
   exit 0
 fi
 
+if [[ $1 == "help" ]]; then
+  echo ""
+  echo "Usage: kubectl dangling-va <command>"
+  echo ""
+  echo "Available commands:"
+  echo ""
+  echo -e "list\t\tList all dangling VolumeAttachments that refer to a node which does not exist."
+  echo -e "delete\t\tDelete all dangling VolumeAttachments that refer to a node which does not exist."
+  echo -e "help\t\tPrint this help"
+  echo -e "version\t\tPrint the current installed plugin version"
+fi
+
 if [[ $1 == "list" ]]; then
-  list_dangling_va
+  echo "$(list_dangling_va)"
   exit 0
 fi
 
@@ -15,21 +68,3 @@ if [[ $1 == "delete" ]]; then
   delete_dangling_va
   exit 0
 fi
-
-# inner functions
-function list_dangling_va {
-
-}
-
-function delete_dangling_va {
-
-}
-
-# private helper functions
-function __get_nodes {
-  kubectl get nodes -ojson | jq -r .items[].metadata.name
-}
-
-function __get_va {
-  kubectl get volumeattachments -ojson | jq '.items[] | {name: .metadata.name, node: .spec.nodeName}' | jq -s
-}
