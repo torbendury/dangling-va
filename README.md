@@ -48,4 +48,14 @@ If you have any feedback, please reach out to me at [torben@torbendury.de](mailt
 
 Contributions are always welcome!
 
-See [`CONTRIBUTING.md`](CONTRIBUTING.md) (to be done) for ways to get started.
+See [CONTRIBUTING.md](CONTRIBUTING.md) (to be done) for ways to get started.
+
+## License
+
+This plugin is licensed under GNU GPLv3 which can be read under [LICENSE.md](LICENSE.md).
+
+To make it easy, you may use this software as a private user as well as a commercial user, e.g. a company. You can further distribute and modify the software.
+
+What you can NOT do is disclose the source of this software, copyright it or change the license of it.
+
+Also, I do not provide any liability or warranty in case you break anything while using this software. So take care of what you are doing. If you do not trust me, take a look at the source code.
