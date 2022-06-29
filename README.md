@@ -46,7 +46,7 @@ version         Print the current installed plugin version
 ## Features
 
 - List dangling `VolumeAttachment` resources
-- _TO BE DONE: delete dangling_`VolumeAttachments`
+- Delete dangling `VolumeAttachments`
 
 ## Feedback
 
