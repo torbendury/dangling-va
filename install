@@ -1,1 +1,23 @@
 #!/bin/bash
+
+set -euo pipefail
+
+echo "INSTALL SCRIPT FOR KUBECTL PLUGIN 'dangling-va'"
+echo "Requirement for installation is 'jq', 'sed', 'grep' and 'cut'."
+echo "Inspecting if the requirements are satisfied..."
+
+command -v jq > /dev/null
+command -v sed > /dev/null
+command -v grep > /dev/null
+command -v cut > /dev/null
+
+echo "Done. The required tooling seems to be installed."
+
+echo "Installing plugin..."
+
+sudo cp src/kubectl_dangling-va /usr/local/bin/
+
+echo "Done."
+
+echo "Check functionality by running:"
+echo -e "\t\tkubectl dangling-va version"
