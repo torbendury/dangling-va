@@ -4,6 +4,14 @@ A simple and fast plugin (written in `bash`) to get a list of dangling `VolumeAt
 
 This plugin was written by my own demand and is always subject to change.
 
+## Idea
+
+Deleting a `VolumeAttachment` is not possible, because normally Kubernetes itself watches the `VolumeAttachments` with help of the csi-driver. In certain situations, it can happen that the csi-driver is not able to handle a `VolumeAttachment` in the case of a node not being present anymore.
+
+Safely deleting a `VolumeAttachment` in this scenario is possible by patching out the Kubernetes finalizer.
+
+Detection and "deletion" is done convenient and automatic by this plugin.
+
 ## Installation
 
 To install the project, either download the repository as a ZIP file or clone it. Afterwards, you can use the `install` script (might need root to move the plugin to the right directory) or just move the `kubectl-dangling_va` script to the kubectl plugin directory.
