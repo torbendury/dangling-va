@@ -37,13 +37,20 @@ function list_dangling_va {
 }
 
 function delete_dangling_va {
-  echo "WARNING: This sub-command has not yet been implemented."
-  return 0
+  DANGLING_VOLUMEATTACHMENTS=$(list_dangling_va)
+  if [[ $DANGLING_VOLUMEATTACHMENTS == "No dangling VolumeAttachments found." ]]; then
+    echo "$DANGLING_VOLUMEATTACHMENTS"
+  else
+    # patch out the kubernetes finalizer
+    for va in $DANGLING_VOLUMEATTACHMENTS; do
+      kubectl patch volumeattachment $va --type=strategic -p '{"metadata":{"finalizers":null}}'
+    done
+  fi
 }
 
 # argument handling
 if [[ $1 == "version" ]]; then
-  echo -e "Installed version:\t\t0.0.1"
+  echo -e "Installed version:\t\t0.1.0"
   echo -e "Get the latest release at:\thttps://github.com/torbendury/dangling-va"
   exit 0
 fi
