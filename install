@@ -15,7 +15,7 @@ echo "Done. The required tooling seems to be installed."
 
 echo "Installing plugin..."
 
-sudo cp src/kubectl_dangling-va /usr/local/bin/
+sudo cp src/kubectl-dangling_va /usr/local/bin/
 
 echo "Done."
 
